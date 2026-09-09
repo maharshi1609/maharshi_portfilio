@@ -1,0 +1,363 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                      */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--bg-alt);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+
+  --font-sans: var(--font-sans-stack);
+  --font-mono: var(--font-mono-stack);
+
+  --radius-card: 1.125rem;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Font stacks — next/font supplies the first entry, the rest are fallbacks. */
+  --font-sans-stack: var(--font-geist-sans), ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono-stack: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular,
+    "SF Mono", Menlo, Consolas, monospace;
+
+  --bg: #05070e;
+  --bg-alt: #080c16;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-2: rgba(255, 255, 255, 0.065);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --fg: #e8eef9;
+  --muted: #99a5ba;
+  --faint: #707c90;
+  --accent: #4c8dff;
+  --accent-2: #22d3ee;
+  --accent-soft: rgba(76, 141, 255, 0.14);
+  --accent-fg: #050a14;
+  --glow: rgba(76, 141, 255, 0.2);
+  --grid-line: rgba(255, 255, 255, 0.032);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 18px 40px -24px rgba(0, 0, 0, 0.9);
+}
+
+:root.light {
+  color-scheme: light;
+
+  --bg: #f5f8fc;
+  --bg-alt: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #eef3fa;
+  --line: rgba(10, 22, 45, 0.1);
+  --line-strong: rgba(10, 22, 45, 0.2);
+  --fg: #0a1220;
+  --muted: #4b5768;
+  --faint: #66738a;
+  --accent: #1d6be5;
+  --accent-2: #0e8ea3;
+  --accent-soft: rgba(29, 107, 229, 0.09);
+  --accent-fg: #ffffff;
+  --glow: rgba(29, 107, 229, 0.14);
+  --grid-line: rgba(10, 22, 45, 0.05);
+  --shadow-card: 0 1px 2px rgba(10, 22, 45, 0.04),
+    0 16px 36px -26px rgba(10, 22, 45, 0.35);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans-stack);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Thin, unobtrusive scrollbar */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: 999px;
+    border: 3px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Layout helpers                                                     */
+/* ------------------------------------------------------------------ */
+
+.shell {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .shell {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .shell {
+    max-width: 1320px;
+  }
+}
+
+.section-pad {
+  padding-block: clamp(4rem, 9vw, 7.5rem);
+}
+
+/* Fluid type */
+.t-display {
+  font-size: clamp(2.25rem, 1.35rem + 4.4vw, 4.5rem);
+  line-height: 1.03;
+  letter-spacing: -0.035em;
+}
+
+.t-h2 {
+  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.028em;
+}
+
+.t-h3 {
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+}
+
+.t-lead {
+  font-size: clamp(1rem, 0.94rem + 0.32vw, 1.175rem);
+  line-height: 1.65;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Decorative                                                         */
+/* ------------------------------------------------------------------ */
+
+.grid-bg {
+  background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    #000 20%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    #000 20%,
+    transparent 78%
+  );
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(90px);
+  background: var(--glow);
+  pointer-events: none;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--line-strong) 25%,
+    var(--line-strong) 75%,
+    transparent
+  );
+}
+
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--fg) 0%,
+    var(--fg) 30%,
+    var(--accent) 68%,
+    var(--accent-2) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Theme-conditional visibility (used by the theme toggle icons) */
+.theme-light-only {
+  display: none;
+}
+
+:root.light .theme-light-only {
+  display: block;
+}
+
+:root.light .theme-dark-only {
+  display: none;
+}
+
+/* Card with a subtle accent edge on hover */
+.card {
+  position: relative;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.28s ease, transform 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.card-hover:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: translateY(-3px);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Scroll reveal                                                      */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Below-the-fold reveals: GSAP owns the motion, CSS only supplies the starting
+ * state. Hiding here (rather than in JS) means the element is already invisible
+ * at first paint, so there is no flash before GSAP runs. The `.js` guard means
+ * that without JavaScript nothing is ever hidden.
+ */
+.js .reveal {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/*
+ * The hero is deliberately NOT animated by GSAP.
+ *
+ * It is the LCP content, and gating it on a JS bundle + hydration delayed the
+ * headline by seconds on a throttled connection. A pure CSS entrance starts at
+ * first paint instead, independent of network speed. GSAP still drives the
+ * hero's scroll parallax, which genuinely needs JS.
+ */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.js [data-hero] {
+  opacity: 0;
+  animation: hero-in 0.7s cubic-bezier(0.22, 0.68, 0.24, 1) forwards;
+  animation-delay: calc(var(--hero-i, 0) * 70ms);
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: float-soft 7s ease-in-out infinite;
+}
+
+.animate-caret {
+  animation: caret 1.1s step-end infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion                                                     */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /*
+   * Belt and braces: GSAP's matchMedia already skips the tweens under reduced
+   * motion, but this guarantees content is visible even before GSAP runs.
+   */
+  .js .reveal,
+  .js [data-hero] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
